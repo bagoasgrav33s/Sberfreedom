@@ -7,28 +7,32 @@
 <meta name="description" content="Прототип: Индекс Жизненной Свободы + Финансовый Доппельгангер — переработанный интерфейс" />
 
 <style>
-  :root{
-    --blue: #009CF0;
-    --green: #00B36A;
-    --green-soft: #00A79D;
-    --yellow: #F7E64A;
-    --white: #FFFFFF;
+ :root{
+    /* === ОСНОВНАЯ ПАЛИТРА СБЕРА === */
+    --blue: #0087cd;       /* Основной голубой [citation:1] */
+    --green: #21BA72;      /* Основной зеленый (Изумрудный) [citation:1] */
+    --green-soft: #42E3B4; /* Мягкий бирюзовый (Арктический) [citation:1] */
+    --yellow: #FAED00;     /* Основной желтый (Солнечный) [citation:1] */
 
-   
-    --bg-start: #F7E64A;     /* жёлтый угол */
-    --bg-mid1: #00B36A;      /* зелёный */
-    --bg-mid2: #00A79D;      /* бирюзовый */
-    --bg-end: #009CF0;       /* голубой */
+    /* === ФОН И ОСНОВА === */
+    --bg-color: #FFFFFF;   /* Белый фон приложения */
+    --card-bg: #FFFFFF;    /* Белый фон карточек */
+    --card-border: rgba(0, 0, 0, 0.08); /* Тонкая серая граница для карточек */
 
-    --card-glass: rgba(255,255,255,0.14);
-    --glass-border: rgba(255,255,255,0.28);
-    --text-main: #FFFFFF;
-    --text-muted: rgba(255,255,255,0.75);
+    /* === ТЕКСТ === */
+    --text-main: #333333;      /* Основной текст - темно-серый */
+    --text-muted: #666666;     /* Второстепенный текст */
+    --text-on-accent: #FFFFFF; /* Текст на цветном акценте (белый) */
 
+    /* === АКЦЕНТЫ И ГРАДИЕНТЫ === */
     --accent1: var(--green);
     --accent2: var(--blue);
     --accent3: var(--yellow);
 
+    --gradient-primary: linear-gradient(90deg, var(--green), var(--blue));
+    --gradient-secondary: linear-gradient(90deg, var(--green-soft), var(--blue));
+
+    /* === ОБЩИЕ ПЕРЕМЕННЫЕ === */
     --radius: 16px;
     font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
     color-scheme: light;
@@ -39,36 +43,31 @@
 body{
     margin:0;
     min-height:100vh;
-    background: linear-gradient(
-        135deg,
-        var(--bg-start) 0%,
-        var(--bg-mid1) 35%,
-        var(--bg-mid2) 65%,
-        var(--bg-end) 100%
-    );
+    background: var(--bg-color); /* Сплошной белый фон */
     color: var(--text-main);
     -webkit-font-smoothing:antialiased;
     padding:28px;
     font-size:15px;
 }
 
+/* === КАРТОЧКИ === */
 .card{
-    background: var(--card-glass);
-    backdrop-filter: blur(18px);
+    background: var(--card-bg);
+    backdrop-filter: none; /* Убран эффект стекла */
     border-radius: var(--radius);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.22);
+    border: 1px solid var(--card-border); /* Светлая граница */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Легкая тень для глубины */
     padding: 18px;
 }
 
 .logo{
     width:48px;height:48px;border-radius:12px;
-    background: linear-gradient(135deg,var(--green), var(--blue));
+    background: var(--gradient-primary); /* Градиент Сбера */
     display:grid;place-items:center;
-    font-weight:800;color:#000;
+    font-weight:800;color: var(--text-on-accent); /* Белый текст на градиенте */
 }
 
-
+/* === КРУГОВАЯ ДИАГРАММА (ИНДЕКС) === */
 svg.progress circle#arcMain{
     stroke: url(#lg2);
 }
@@ -76,11 +75,15 @@ svg.progress circle#arcMain{
 #lg2 stop[offset="0"]{ stop-color: var(--blue); }
 #lg2 stop[offset="1"]{ stop-color: var(--green); }
 
+/* === КНОПКИ === */
 .primaryBtn{
-    background: linear-gradient(90deg,var(--green), var(--blue));
-    color:#fff;font-weight:700;
-    padding:9px 14px;border:none;
-    border-radius:10px;cursor:pointer;
+    background: var(--gradient-primary);
+    color: var(--text-on-accent);
+    font-weight:700;
+    padding:9px 14px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
     transition:0.2s;
 }
 .primaryBtn:hover{
@@ -93,51 +96,56 @@ svg.progress circle#arcMain{
 
 .quickBtn{
     background:transparent;
-    border:1px solid rgba(255,255,255,0.5);
+    border:1px solid var(--blue); /* Голубая граница */
     border-radius:10px;
     padding:8px 12px;
-    color:var(--text-muted);
+    color: var(--blue); /* Голубой текст */
     transition:0.15s;
 }
 .quickBtn:hover{
-    background:rgba(255,255,255,0.20);
-    color:white;
+    background: rgba(0, 135, 205, 0.08); /* Светло-голубой фон при наведении */
+    color: var(--blue);
 }
-
+/* === ТЕКСТ === */
 .subtitle, #privacyState, small, label span{
     color: var(--text-muted);
 }
 
+/* === ПЛИТКИ И ЭЛЕМЕНТЫ === */
 .tile{
-    background: rgba(255,255,255,0.18);
+    background: rgba(33, 186, 114, 0.05); /* Очень светлый зеленый фон */
     border-radius:12px;
-    border:1px solid rgba(255,255,255,0.25);
+    border:1px solid rgba(33, 186, 114, 0.15); /* Светло-зеленая граница */
 }
 
-
+/* === СООБЩЕНИЯ В ЧАТЕ === */
 .botMsg{
-    background:linear-gradient(90deg,var(--blue), var(--green));
-    color:#041013;padding:12px;
+    background: var(--gradient-secondary);
+    color: var(--text-on-accent);
+    padding:12px;
     border-radius:14px;
 }
 .userMsg{
-    border-color:rgba(255,255,255,0.45);
+    background: rgba(0, 0, 0, 0.04); /* Светло-серый фон для сообщений пользователя */
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: var(--text-main);
+    padding:12px;
+    border-radius:14px;
 }
 
 .avatar{
-    background:rgba(255,255,255,0.1);
-    border:1px solid rgba(255,255,255,0.3);
+    background: rgba(0, 135, 205, 0.08); /* Светло-голубой фон */
+    border:1px solid rgba(0, 135, 205, 0.2);
 }
 
 .mission{
-    background:rgba(255,255,255,0.12);
-    border:1px solid rgba(255,255,255,0.25);
+    background: rgba(0, 0, 0, 0.02); /* Очень светлый серый фон */
+    border:1px solid var(--card-border);
 }
 
-/* Ползунок */
-input[type=range]::-webkit-slider-thumb{
-    background: var(--green);
-}
+/* === ПОЛЗУНОК (RANGE INPUT) === */
+input[type=range] {
+    accent-color: var(--green); /* Зеленый ползунок */
 </style>
 </head>
 <body>
@@ -152,7 +160,6 @@ input[type=range]::-webkit-slider-thumb{
             <div class="subtitle">Индекс свободы + Финансовый Доппельгангер</div>
           </div>
         </div>
-
         <div class="avatarWrap" aria-hidden="false">
           <div class="avatar" role="img" aria-label="Аватар пользователя">
             <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -167,7 +174,6 @@ input[type=range]::-webkit-slider-thumb{
             </svg>
             <div class="overlay" aria-hidden="true"></div>
           </div>
-
           <div class="indexBox" role="region" aria-label="Индекс свободы">
             <div style="display:flex;align-items:center;gap:12px;width:100%">
               <div style="flex:1">
@@ -176,7 +182,6 @@ input[type=range]::-webkit-slider-thumb{
               </div>
               <button class="primaryBtn ripple" id="exportBtn" title="Экспортировать текущее состояние">Экспорт</button>
             </div>
-
             <div class="circle" aria-hidden="false" id="arcWrap">
               <svg class="progress" viewBox="0 0 120 120" width="150" height="150" aria-hidden="true">
                 <defs>
@@ -189,14 +194,12 @@ input[type=range]::-webkit-slider-thumb{
               <div class="score" id="score">--</div>
               <div class="scoreLabel">Индекс свободы</div>
             </div>
-
             <div class="leftSmall" style="margin-top:8px">
               <div class="chip" id="nextTip">Совет: —</div>
               <div class="chip" id="privacyChip">Приватность: <strong id="privacyState">on</strong></div>
             </div>
           </div>
         </div>
-
         <div style="margin-top:12px" class="card" aria-hidden="false">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div style="font-weight:800">Миссии</div>
@@ -211,7 +214,6 @@ input[type=range]::-webkit-slider-thumb{
           </div>
         </div>
       </div>
-
       <div class="card hover-lift" aria-hidden="false">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <div style="font-weight:800">Настройки приватности</div>
@@ -234,7 +236,6 @@ input[type=range]::-webkit-slider-thumb{
         </div>
       </div>
     </div>
-
     <!-- RIGHT COLUMN -->
     <div class="rightCol">
       <div class="card panelLarge hover-lift" aria-live="polite">
@@ -245,19 +246,16 @@ input[type=range]::-webkit-slider-thumb{
           </div>
           <div style="text-align:right;color:var(--muted);font-size:13px" id="lastUpdated">Обновлено: сейчас</div>
         </div>
-
         <div style="margin-top:14px;display:flex;gap:12px">
           <div style="flex:1">
             <div class="freedomTiles" id="breakdown">
               <!-- tiles inserted by JS -->
             </div>
-
             <div style="margin-top:14px">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div style="font-weight:800">Прогнозы</div>
                 <div style="color:var(--muted);font-size:13px">Смоделируйте своё будущее</div>
               </div>
-
               <div style="margin-top:10px" class="card">
                 <div style="display:flex;gap:12px;align-items:center">
                   <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(90deg,var(--accent2),var(--accent3));display:grid;place-items:center;font-weight:700">7</div>
@@ -266,7 +264,6 @@ input[type=range]::-webkit-slider-thumb{
                     <div style="font-size:13px;color:var(--muted)">Мелкие корректировки без дискомфорта</div>
                   </div>
                 </div>
-
                 <div style="margin-top:12px;display:flex;gap:12px">
                   <div style="flex:1">
                     <label style="font-size:13px;color:var(--muted)">Сдвинуть платеж (руб/мес)</label>
@@ -278,12 +275,9 @@ input[type=range]::-webkit-slider-thumb{
                     <button class="primaryBtn ripple" id="applyShift">Смоделировать</button>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
-
           <div style="width:320px">
             <div style="font-weight:800">Сценарии свободы</div>
             <div class="scenarioList" style="margin-top:10px">
@@ -304,42 +298,34 @@ input[type=range]::-webkit-slider-thumb{
                 </div>
               </div>
             </div>
-
             <div style="margin-top:12px" class="card">
               <div style="font-weight:800">История действий</div>
               <div id="history" style="margin-top:8px;font-size:13px;color:var(--muted);max-height:160px;overflow:auto"></div>
             </div>
-
           </div>
         </div>
       </div>
-
       <div class="card panelLarge hover-lift" aria-hidden="false">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div style="font-weight:800">Диалог с Доппельгангером</div>
           <div style="color:var(--muted);font-size:13px">Советы, сценарии и мягкие напоминания</div>
         </div>
-
         <div class="chatWindow" style="margin-top:12px">
           <div class="chatLog" id="chatLog" role="log" aria-live="polite">
             <!-- messages -->
           </div>
-
           <div style="display:flex;gap:8px;align-items:center">
             <input id="userInput" type="text" aria-label="Введите сообщение" placeholder="Спросить доппельгангера..." style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" />
             <button class="primaryBtn ripple" id="sendBtn">Отправить</button>
           </div>
-
           <div class="quickActions" id="quickActions">
             <!-- quick suggestions injected -->
           </div>
         </div>
       </div>
-
       <footer>
         Прототип: Свободный Я — индекс свободы + финансовый доппельгангер. Сохраните экспорт для демонстрации.
       </footer>
-
     </div>
   </div>
 
