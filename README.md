@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -7,145 +8,161 @@
 <meta name="description" content="Прототип: Индекс Жизненной Свободы + Финансовый Доппельгангер — переработанный интерфейс" />
 
 <style>
- :root{
-    /* === ОСНОВНАЯ ПАЛИТРА СБЕРА === */
-    --blue: #0087cd;       /* Основной голубой [citation:1] */
-    --green: #21BA72;      /* Основной зеленый (Изумрудный) [citation:1] */
-    --green-soft: #42E3B4; /* Мягкий бирюзовый (Арктический) [citation:1] */
-    --yellow: #FAED00;     /* Основной желтый (Солнечный) [citation:1] */
+  :root{
+    --bg-1: #071019;
+    --bg-2: #041219;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.06);
+    --muted: #9FB0B9;
+    --accent1: #17A74F;
+    --accent2: #19C4D9;
+    --accent3: #8B6CF6;
+    --accent-glow: rgba(32,195,214,0.12);
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --ease: cubic-bezier(.16,.84,.32,1);
+    --font-sans: Inter, "SF Pro Text", "Segoe UI", Roboto, Arial, sans-serif;
+    color-scheme: dark;
+  }
 
-    /* === ФОН И ОСНОВА === */
-    --bg-color: #FFFFFF;   /* Белый фон приложения */
-    --card-bg: #FFFFFF;    /* Белый фон карточек */
-    --card-border: rgba(0, 0, 0, 0.08); /* Тонкая серая граница для карточек */
-
-    /* === ТЕКСТ === */
-    --text-main: #333333;      /* Основной текст - темно-серый */
-    --text-muted: #666666;     /* Второстепенный текст */
-    --text-on-accent: #FFFFFF; /* Текст на цветном акценте (белый) */
-
-    /* === АКЦЕНТЫ И ГРАДИЕНТЫ === */
-    --accent1: var(--green);
-    --accent2: var(--blue);
-    --accent3: var(--yellow);
-
-    --gradient-primary: linear-gradient(90deg, var(--green), var(--blue));
-    --gradient-secondary: linear-gradient(90deg, var(--green-soft), var(--blue));
-
-    /* === ОБЩИЕ ПЕРЕМЕННЫЕ === */
-    --radius: 16px;
-    font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
-    color-scheme: light;
-}
-
-*{box-sizing:border-box}
-
-body{
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
     margin:0;
     min-height:100vh;
-    background: var(--bg-color); /* Сплошной белый фон */
-    color: var(--text-main);
+    background:
+      radial-gradient(800px 400px at 10% 10%, rgba(139,108,246,0.08), transparent 6%),
+      radial-gradient(600px 300px at 85% 80%, rgba(25,196,217,0.06), transparent 6%),
+      linear-gradient(180deg,var(--bg-1), var(--bg-2) 85%);
+    color:#E6F2EF;
     -webkit-font-smoothing:antialiased;
-    padding:28px;
+    font-family:var(--font-sans);
+    padding:34px;
     font-size:15px;
-}
+    transition:background 400ms var(--ease);
+    --cursorX: 50%;
+    --cursorY: 50%;
+  }
 
-/* === КАРТОЧКИ === */
-.card{
-    background: var(--card-bg);
-    backdrop-filter: none; /* Убран эффект стекла */
-    border-radius: var(--radius);
-    border: 1px solid var(--card-border); /* Светлая граница */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Легкая тень для глубины */
-    padding: 18px;
-}
+  /* Layout */
+  .app{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:360px 1fr;gap:22px;align-items:start}
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--radius-lg);
+    border:1px solid rgba(255,255,255,0.03);
+    padding:18px;
+    box-shadow: 0 10px 30px rgba(2,7,9,0.6), 0 1px 0 rgba(255,255,255,0.02) inset;
+    backdrop-filter: blur(8px) saturate(120%);
+    transform: translateZ(0);
+    transition: transform 300ms var(--ease), box-shadow 300ms var(--ease);
+  }
+  .card.hover-lift:hover{ transform: translateY(-8px) translateZ(0); box-shadow: 0 18px 50px rgba(2,7,9,0.65);}
 
-.logo{
-    width:48px;height:48px;border-radius:12px;
-    background: var(--gradient-primary); /* Градиент Сбера */
-    display:grid;place-items:center;
-    font-weight:800;color: var(--text-on-accent); /* Белый текст на градиенте */
-}
+  header.appHeader{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent1), var(--accent2));display:grid;place-items:center;font-weight:800;color:#041010;font-size:18px;box-shadow:0 6px 18px rgba(25,196,217,0.06)}
+  .title{font-weight:800;font-size:18px}
+  .subtitle{font-size:13px;color:var(--muted)}
 
-/* === КРУГОВАЯ ДИАГРАММА (ИНДЕКС) === */
-svg.progress circle#arcMain{
-    stroke: url(#lg2);
-}
+  /* LEFT column */
+  .leftCol{display:flex;flex-direction:column;gap:16px}
+  .avatarWrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .avatar{
+    width:150px;height:150px;border-radius:26px;background:linear-gradient(180deg, rgba(255,255,255,0.016), rgba(255,255,255,0.008));
+    display:grid;place-items:center;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.04);
+    transition: transform 400ms var(--ease), box-shadow 300ms var(--ease);
+  }
+  .avatar:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(12,20,22,0.5) }
+  .avatar svg{width:100%;height:100%}
+  .avatar .overlay{position:absolute;inset:0;background:radial-gradient(400px circle at 20% 10%, rgba(32,195,214,0.14), transparent 18%);mix-blend-mode:screen;pointer-events:none;opacity:.9}
 
-#lg2 stop[offset="0"]{ stop-color: var(--blue); }
-#lg2 stop[offset="1"]{ stop-color: var(--green); }
+  .indexBox{width:100%;display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.008));border:1px solid rgba(255,255,255,0.02)}
+  .circle{width:150px;height:150px;position:relative;display:grid;place-items:center}
+  svg.progress{transform:rotate(-90deg);filter: drop-shadow(0 6px 18px rgba(20,60,120,0.08))}
+  .score{position:absolute;font-weight:900;font-size:30px;letter-spacing:-0.5px}
+  .scoreLabel{font-size:13px;color:var(--muted)}
 
-/* === КНОПКИ === */
-.primaryBtn{
-    background: var(--gradient-primary);
-    color: var(--text-on-accent);
-    font-weight:700;
-    padding:9px 14px;
-    border:none;
-    border-radius:10px;
+  .leftSmall{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+  .chip{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.02);font-size:13px;border:1px solid rgba(255,255,255,0.02)}
+
+  /* Right column */
+  .rightCol{display:flex;flex-direction:column;gap:16px}
+  .topRow{display:flex;gap:16px}
+  .panelLarge{flex:1}
+  .panelSmall{width:320px}
+
+  .freedomTiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .tile{
+    padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.006));
+    border:1px solid rgba(255,255,255,0.02);
+    transition: transform 260ms var(--ease), box-shadow 260ms var(--ease), background 260ms var(--ease);
     cursor:pointer;
-    transition:0.2s;
-}
-.primaryBtn:hover{
-    transform:translateY(-2px);
-    filter:brightness(1.08);
-}
-.primaryBtn:active{
-    transform:translateY(0);
-}
+  }
+  .tile:hover{ transform: translateY(-8px) scale(1.01); box-shadow: 0 16px 36px rgba(2,7,9,0.5) }
+  .tile h4{margin:0;font-size:13px}
+  .tile .pct{font-weight:800;font-size:18px;margin-top:8px}
+  .tile .desc{font-size:12px;color:var(--muted);margin-top:6px}
 
-.quickBtn{
-    background:transparent;
-    border:1px solid var(--blue); /* Голубая граница */
-    border-radius:10px;
-    padding:8px 12px;
-    color: var(--blue); /* Голубой текст */
-    transition:0.15s;
-}
-.quickBtn:hover{
-    background: rgba(0, 135, 205, 0.08); /* Светло-голубой фон при наведении */
-    color: var(--blue);
-}
-/* === ТЕКСТ === */
-.subtitle, #privacyState, small, label span{
-    color: var(--text-muted);
-}
+  /* Missions */
+  .missions{display:flex;flex-direction:column;gap:8px}
+  .mission{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.02)}
+  .mission .left{max-width:68%}
+  .mission .title{font-weight:700}
+  .progressBar{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px}
+  .progressBar > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent3));width:0%;transition:width 900ms cubic-bezier(.2,.9,.3,1)}
 
-/* === ПЛИТКИ И ЭЛЕМЕНТЫ === */
-.tile{
-    background: rgba(33, 186, 114, 0.05); /* Очень светлый зеленый фон */
-    border-radius:12px;
-    border:1px solid rgba(33, 186, 114, 0.15); /* Светло-зеленая граница */
-}
+  /* Chat */
+  .chatWindow{display:flex;flex-direction:column;gap:10px;height:420px}
+  .chatLog{overflow:auto;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border-radius:10px;border:1px solid rgba(255,255,255,0.02);flex:1;scroll-behavior:smooth}
+  .message{display:flex;gap:8px;padding:8px;opacity:0;transform:translateY(6px);animation:msgIn .26s forwards var(--delay,0s)}
+  @keyframes msgIn { to{opacity:1;transform:none} }
+  .botMsg{background:linear-gradient(90deg,var(--accent2), var(--accent3));color:#061014;padding:10px;border-radius:12px;max-width:78%;align-self:flex-start;box-shadow:0 8px 24px rgba(26,40,50,0.4)}
+  .userMsg{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px;border-radius:10px;color:var(--muted);align-self:flex-end}
 
-/* === СООБЩЕНИЯ В ЧАТЕ === */
-.botMsg{
-    background: var(--gradient-secondary);
-    color: var(--text-on-accent);
-    padding:12px;
-    border-radius:14px;
-}
-.userMsg{
-    background: rgba(0, 0, 0, 0.04); /* Светло-серый фон для сообщений пользователя */
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    color: var(--text-main);
-    padding:12px;
-    border-radius:14px;
-}
+  .typing{
+    display:inline-block;height:18px;padding:8px 10px;border-radius:12px;background:linear-gradient(90deg,var(--accent2), var(--accent3));color:#061014;
+  }
+  .dots span{display:inline-block;width:5px;height:5px;margin:0 3px;background:#061014;border-radius:50%;opacity:0;animation:dots 1s infinite;}
+  .dots span:nth-child(1){animation-delay:0s}
+  .dots span:nth-child(2){animation-delay:.12s}
+  .dots span:nth-child(3){animation-delay:.24s}
+  @keyframes dots{0%{opacity:0;transform:translateY(0)}40%{opacity:1;transform:translateY(-6px)}80%{opacity:0;transform:translateY(0)}}
 
-.avatar{
-    background: rgba(0, 135, 205, 0.08); /* Светло-голубой фон */
-    border:1px solid rgba(0, 135, 205, 0.2);
-}
+  .quickActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+  .quickBtn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:var(--muted);cursor:pointer;transition:transform 160ms var(--ease)}
+  .quickBtn:hover{transform:translateY(-6px);border-color:rgba(255,255,255,0.09);color:#EAF7F7}
+  .primaryBtn{background:linear-gradient(90deg,var(--accent1), var(--accent2));border:none;color:#061014;padding:9px 12px;border-radius:10px;font-weight:800;cursor:pointer;transition:transform 160ms var(--ease), box-shadow 160ms var(--ease)}
+  .primaryBtn:active{transform:translateY(1px) scale(.997)}
+  .ripple{position:relative;overflow:hidden}
+  .ripple::after{content:"";position:absolute;border-radius:50%;transform:scale(0);opacity:.6;pointer-events:none}
 
-.mission{
-    background: rgba(0, 0, 0, 0.02); /* Очень светлый серый фон */
-    border:1px solid var(--card-border);
-}
+  /* controls */
+  .controls{display:flex;gap:8px;margin-top:8px;align-items:center}
+  input[type=range]{width:100%;accent-color:var(--accent2)}
 
-/* === ПОЛЗУНОК (RANGE INPUT) === */
-input[type=range] {
-    accent-color: var(--green); /* Зеленый ползунок */
+  /* small */
+  footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+  .muted{color:var(--muted)}
+
+  /* overlay detail */
+  .overlayPanel{
+    position:fixed;right:28px;top:24%;width:360px;padding:18px;border-radius:16px;background:linear-gradient(180deg, rgba(10,18,22,0.95), rgba(10,18,22,0.92));border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 80px rgba(0,0,0,0.7);transform:translateY(12px) scale(.98);opacity:0;pointer-events:none;transition:all 260ms var(--ease);
+    z-index:80;
+  }
+  .overlayPanel.open{opacity:1;transform:none;pointer-events:auto}
+  .overlayPanel h4{margin:0 0 6px 0}
+  .overlayClose{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer}
+
+  /* responsive */
+  @media (max-width:1100px){
+    .app{grid-template-columns:1fr; padding:12px}
+    .panelSmall{width:100%}
+    .overlayPanel{right:14px;left:14px;top:40%}
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none!important;animation:none!important}
+  }
 </style>
 </head>
 <body>
@@ -160,6 +177,7 @@ input[type=range] {
             <div class="subtitle">Индекс свободы + Финансовый Доппельгангер</div>
           </div>
         </div>
+
         <div class="avatarWrap" aria-hidden="false">
           <div class="avatar" role="img" aria-label="Аватар пользователя">
             <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -174,6 +192,7 @@ input[type=range] {
             </svg>
             <div class="overlay" aria-hidden="true"></div>
           </div>
+
           <div class="indexBox" role="region" aria-label="Индекс свободы">
             <div style="display:flex;align-items:center;gap:12px;width:100%">
               <div style="flex:1">
@@ -182,6 +201,7 @@ input[type=range] {
               </div>
               <button class="primaryBtn ripple" id="exportBtn" title="Экспортировать текущее состояние">Экспорт</button>
             </div>
+
             <div class="circle" aria-hidden="false" id="arcWrap">
               <svg class="progress" viewBox="0 0 120 120" width="150" height="150" aria-hidden="true">
                 <defs>
@@ -194,12 +214,14 @@ input[type=range] {
               <div class="score" id="score">--</div>
               <div class="scoreLabel">Индекс свободы</div>
             </div>
+
             <div class="leftSmall" style="margin-top:8px">
               <div class="chip" id="nextTip">Совет: —</div>
               <div class="chip" id="privacyChip">Приватность: <strong id="privacyState">on</strong></div>
             </div>
           </div>
         </div>
+
         <div style="margin-top:12px" class="card" aria-hidden="false">
           <div style="display:flex;justify-content:space-between;align-items:center">
             <div style="font-weight:800">Миссии</div>
@@ -214,6 +236,7 @@ input[type=range] {
           </div>
         </div>
       </div>
+
       <div class="card hover-lift" aria-hidden="false">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
           <div style="font-weight:800">Настройки приватности</div>
@@ -236,6 +259,7 @@ input[type=range] {
         </div>
       </div>
     </div>
+
     <!-- RIGHT COLUMN -->
     <div class="rightCol">
       <div class="card panelLarge hover-lift" aria-live="polite">
@@ -246,16 +270,19 @@ input[type=range] {
           </div>
           <div style="text-align:right;color:var(--muted);font-size:13px" id="lastUpdated">Обновлено: сейчас</div>
         </div>
+
         <div style="margin-top:14px;display:flex;gap:12px">
           <div style="flex:1">
             <div class="freedomTiles" id="breakdown">
               <!-- tiles inserted by JS -->
             </div>
+
             <div style="margin-top:14px">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div style="font-weight:800">Прогнозы</div>
                 <div style="color:var(--muted);font-size:13px">Смоделируйте своё будущее</div>
               </div>
+
               <div style="margin-top:10px" class="card">
                 <div style="display:flex;gap:12px;align-items:center">
                   <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(90deg,var(--accent2),var(--accent3));display:grid;place-items:center;font-weight:700">7</div>
@@ -264,6 +291,7 @@ input[type=range] {
                     <div style="font-size:13px;color:var(--muted)">Мелкие корректировки без дискомфорта</div>
                   </div>
                 </div>
+
                 <div style="margin-top:12px;display:flex;gap:12px">
                   <div style="flex:1">
                     <label style="font-size:13px;color:var(--muted)">Сдвинуть платеж (руб/мес)</label>
@@ -275,9 +303,12 @@ input[type=range] {
                     <button class="primaryBtn ripple" id="applyShift">Смоделировать</button>
                   </div>
                 </div>
+
               </div>
             </div>
+
           </div>
+
           <div style="width:320px">
             <div style="font-weight:800">Сценарии свободы</div>
             <div class="scenarioList" style="margin-top:10px">
@@ -298,34 +329,42 @@ input[type=range] {
                 </div>
               </div>
             </div>
+
             <div style="margin-top:12px" class="card">
               <div style="font-weight:800">История действий</div>
               <div id="history" style="margin-top:8px;font-size:13px;color:var(--muted);max-height:160px;overflow:auto"></div>
             </div>
+
           </div>
         </div>
       </div>
+
       <div class="card panelLarge hover-lift" aria-hidden="false">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div style="font-weight:800">Диалог с Доппельгангером</div>
           <div style="color:var(--muted);font-size:13px">Советы, сценарии и мягкие напоминания</div>
         </div>
+
         <div class="chatWindow" style="margin-top:12px">
           <div class="chatLog" id="chatLog" role="log" aria-live="polite">
             <!-- messages -->
           </div>
+
           <div style="display:flex;gap:8px;align-items:center">
             <input id="userInput" type="text" aria-label="Введите сообщение" placeholder="Спросить доппельгангера..." style="flex:1;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit" />
             <button class="primaryBtn ripple" id="sendBtn">Отправить</button>
           </div>
+
           <div class="quickActions" id="quickActions">
             <!-- quick suggestions injected -->
           </div>
         </div>
       </div>
+
       <footer>
         Прототип: Свободный Я — индекс свободы + финансовый доппельгангер. Сохраните экспорт для демонстрации.
       </footer>
+
     </div>
   </div>
 
